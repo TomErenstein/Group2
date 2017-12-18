@@ -1,1 +1,205 @@
+//NEW
+var player1Cards;
+var player2Cards;
+var root;
+var base;
+var deck;
+//var table;
+var selected1;
+var selected2;
+var chosen1 = false;
+var rootchosen = false;
+var cardchosen = false;
 
+
+var delay = 10;
+//DELAYS
+var playercardsdelay= 10;
+var basecardsdelay= 100;
+var rootcardsdelay= 100;
+var deckcardsdelay= 25;
+var choosedelay= 10;
+var updatedelay= 50;
+
+//LOAD cards
+function preload() {      
+    //game.load.spritesheet("cards", "./images/cards.png", 61.5, 81, 52);    
+    game.load.spritesheet("cards", "./images/cards.png", 61.5, 81, 52);
+}
+
+//MOVING all children
+function layoutGroup(group, x, y, spread, delay) {  
+    var startX = x - group.children.length * spread * 0.5;
+    for (var i = 0; i < group.children.length; i++) {
+        var child = group.children[i];
+        game.add.tween(child).to({ x: startX + i * spread, y: y }, 500, Phaser.Easing.Quadratic.Out, true, i*delay);
+    }
+}
+
+function create() {
+    // create card GROUPS
+    player1Cards = game.add.group();
+    player2Cards = game.add.group();
+    deck = game.add.group();
+    //table = game.add.group();
+    root = game.add.group();
+    base = game.add.group();
+    selected1 = game.add.group();
+    selected2 = game.add.group();
+    
+    // create the cards on the DECK
+    for (var i = 0; i < 51; i++) {    //NUMBER of cards
+        var card = deck.create(50, 540, "cards");
+        card.anchor.set(0.5, 0.5);
+        card.frame = i;
+        card.name = 'card_' + i;
+        card.value1 = game.rnd.integerInRange(1, 10);
+        card.value2 = game.rnd.integerInRange(1, 10);     //ACTUAL VALUES
+        card.value3 = game.rnd.integerInRange(1, 10);
+    }
+    // Some shuffling
+    
+    for (i = 0; i < 51; i++) {
+        deck.swap(deck.getRandom(), deck.getRandom());   //better SHUFFLE
+    }
+
+    // enable input for all children
+    player1Cards.inputEnableChildren = true;
+    player2Cards.inputEnableChildren = true;
+    deck.inputEnableChildren = true;
+    root.inputEnableChildren = true;
+    base.inputEnableChildren = true;
+    
+    // look for clicks
+    player1Cards.onChildInputDown.add(chooseCard, this);
+    player2Cards.onChildInputDown.add(chooseCard, this);
+    root.onChildInputDown.add(chooseRoot, this);
+    base.onChildInputDown.add(swapCard, this);
+ 
+    //setup ROOT cards
+    for (var j = 0; j < 3; j++) {
+        var card = deck.removeChildAt(0);
+        root.add(card);
+    }
+    //setup BASE cards
+    for (var k = 0; k < 3; k++) {
+        var card = deck.removeChildAt(0);
+        base.add(card);
+    }
+    
+    // distribute 3 cards to each player
+    for (var playerID = 0; playerID < 2; playerID++) {
+        for (var i = 0; i < 3; i++) {
+            var card = deck.removeChildAt(0);
+            if (playerID == 0) {
+                player1Cards.add(card);
+            }
+            else {
+                player2Cards.add(card);
+            }          
+        }
+    }
+    //MOVE cards
+    layoutGroup(player1Cards, 400, 100, 50, playercardsdelay);
+    layoutGroup(player2Cards, 400, 500, 50, playercardsdelay);
+    
+    layoutGroup(base, 500, 300, 50, basecardsdelay);
+    layoutGroup(root, 200, 300, 50, rootcardsdelay);
+    
+    //DECK movement
+    var startX = 200 - deck.children.length * 50 * 0.5;   
+    for (var i = 0; i < deck.children.length; i++) {
+        var child = deck.children[i];
+        game.add.tween(child).to({ x: 50, y: 50 }, 500, Phaser.Easing.Quadratic.Out, true, i*deckcardsdelay);
+    }
+}
+
+function childOf(c,p){while((c=c.parentNode)&&c!==p);return !!c}
+//check for children:   console.log(selected1.children)
+
+function swapCard (card) {     //card is chosen base card
+/*
+    if (card in selected1) {
+        player1Cards.add(card);
+        base.add(selected1.removeChildAt(0));
+        selected1.remove(card);
+    }
+    else if (card in selected2) {
+        player2Cards.add(card);
+        base.add(selected2.removeChildAt(0));
+        selected2.remove(card);
+    }
+       */
+    
+    if (chosen1){
+    console.log("Selected1");
+    console.log(selected1.children);
+    
+    player1Cards.add(card);
+    base.add(selected1.removeChildAt(0));
+    //base.add(selected1.children.indexOf(0));
+    selected1.remove(card);
+    
+    //console.log(card.children);
+    console.log("BASE cards");    
+    console.log(base.children);
+    console.log("Player1 Cards");
+    console.log(player1Cards.children);
+    
+    //console.log(childOf(card,base));
+    }
+    
+    
+    updateCards();
+    chosen1 = false;
+    //rootchosen = false;
+    cardchosen = false;
+    
+}
+
+
+function chooseCard (card) {    //card is chosen player card
+    if (!cardchosen)
+    {
+    if (card.parent == player1Cards) {
+        var startY = card.y - root.children.length * 50 * 0.5;
+        game.add.tween(card).to({ y: startY + 1 * 50, 500: 500 }, 500, Phaser.Easing.Quadratic.Out, true, 1*choosedelay);
+        //make clear that this is selected!!!!
+        selected1.add(card);    //isnt even used???
+        player1Cards.remove(card);   //remove card out of players hand
+        //base.add(card);        //send chosen player card to base (?)
+        chosen1 = true;
+    }
+    else if (card.parent == player2Cards) {
+        var startY = card.y - root.children.length * 50 * 0.5;
+        game.add.tween(card).to({ y: startY + 1 * 50, 500: 500 }, 500, Phaser.Easing.Quadratic.Out, true, 1*choosedelay);
+        //selected2.add(card);
+        //player2Cards.remove(card);    //disabled for now
+    }
+    }
+    cardchosen = true;
+}
+
+//Call this after each move
+function updateCards () {
+    layoutGroup(player1Cards, 400, 100, 50, updatedelay);
+    layoutGroup(player2Cards, 400, 500, 50, updatedelay);
+    layoutGroup(base, 500, 300, 50, updatedelay); 
+}
+
+function chooseRoot (card) {
+    if (!rootchosen)
+    {
+        var startY = 170 - root.children.length * 50 * 0.5;
+        game.add.tween(card).to({ y: startY + 3 * 50, 500:         500 }, 500, Phaser.Easing.Quadratic.Out, true, 3*choosedelay);
+        //disable after first click each round
+        //better do it with highlighting the card
+     }
+    rootchosen = true;    //set to false at next round
+}
+
+function update() {
+
+}
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
