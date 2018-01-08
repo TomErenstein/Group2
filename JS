@@ -4,12 +4,15 @@ var player2Cards;
 var root;
 var base;
 var deck;
+var highscore;
+var highscoredisplay;
 //var table;
 var selected1;
 var selected2;
 var chosen1 = false;
 var rootchosen = false;
 var cardchosen = false;
+
 
 
 var delay = 10;
@@ -25,73 +28,6 @@ var updatedelay= 50;
 function preload() {      
     //game.load.spritesheet("cards", "./images/cards.png", 61.5, 81, 52);    
     game.load.spritesheet("cards", "./images/cards.png", 90, 20, 80);
-    game.load.spritesheet("cards", "./images/cards.png", 83, 18, 20);
-    game.load.spritesheet("cards", "./images/cards.png", 49, 46, 56);
-    game.load.spritesheet("cards", "./images/cards.png", 36, 90, 61);
-    game.load.spritesheet("cards", "./images/cards.png", 11, 55, 79);
-    game.load.spritesheet("cards", "./images/cards.png", 80, 20, 55);
-    game.load.spritesheet("cards", "./images/cards.png", 65, 75, 54);
-    game.load.spritesheet("cards", "./images/cards.png", 94, 52, 32);
-    game.load.spritesheet("cards", "./images/cards.png", 69, 38, 49);
-    game.load.spritesheet("cards", "./images/cards.png", 70, 30, 40);
-    game.load.spritesheet("cards", "./images/cards.png", 39, 80, 52);
-    game.load.spritesheet("cards", "./images/cards.png", 63, 23, 28);
-    game.load.spritesheet("cards", "./images/cards.png", 80, 20, 66);
-    game.load.spritesheet("cards", "./images/cards.png", 67, 13, 63);
-    game.load.spritesheet("cards", "./images/cards.png", 73, 33, 40);
-    game.load.spritesheet("cards", "./images/cards.png", 57, 58, 57);
-    game.load.spritesheet("cards", "./images/cards.png", 18, 74, 16);
-    game.load.spritesheet("cards", "./images/cards.png", 65, 30, 65);
-    game.load.spritesheet("cards", "./images/cards.png", 70, 25, 45);
-    game.load.spritesheet("cards", "./images/cards.png", 33, 63, 26);
-    game.load.spritesheet("cards", "./images/cards.png", 68, 71, 43);
-    game.load.spritesheet("cards", "./images/cards.png", 35, 67, 66);
-    game.load.spritesheet("cards", "./images/cards.png", 60, 35, 57);
-    game.load.spritesheet("cards", "./images/cards.png", 95, 6, 37);
-    game.load.spritesheet("cards", "./images/cards.png", 68, 25, 57);
-    game.load.spritesheet("cards", "./images/cards.png", 77, 48, 56);
-    game.load.spritesheet("cards", "./images/cards.png", 78, 14, 46);
-    game.load.spritesheet("cards", "./images/cards.png", 58, 41, 43);
-    game.load.spritesheet("cards", "./images/cards.png", 28, 70, 68);
-    game.load.spritesheet("cards", "./images/cards.png", 13, 54, 47);
-    game.load.spritesheet("cards", "./images/cards.png", 50, 76, 70);
-    game.load.spritesheet("cards", "./images/cards.png", 54, 46, 95);
-    game.load.spritesheet("cards", "./images/cards.png", 44, 70, 9);
-    game.load.spritesheet("cards", "./images/cards.png", 80, 38, 52);
-    game.load.spritesheet("cards", "./images/cards.png", 42, 60, 19);
-    game.load.spritesheet("cards", "./images/cards.png", 40, 60, 50);
-    game.load.spritesheet("cards", "./images/cards.png", 81, 30, 69);
-    game.load.spritesheet("cards", "./images/cards.png", 65, 30, 40);
-    game.load.spritesheet("cards", "./images/cards.png", 65, 30, 40);
-    game.load.spritesheet("cards", "./images/cards.png", 38, 80, 14);
-    game.load.spritesheet("cards", "./images/cards.png", 80, 30, 60);
-    game.load.spritesheet("cards", "./images/cards.png", 55, 14, 50);
-    game.load.spritesheet("cards", "./images/cards.png", 94, 32, 64);
-    game.load.spritesheet("cards", "./images/cards.png", 68, 60, 64);
-    game.load.spritesheet("cards", "./images/cards.png", 63, 27, 31);
-    game.load.spritesheet("cards", "./images/cards.png", 90, 30, 42);
-    game.load.spritesheet("cards", "./images/cards.png", 93, 39, 36);
-    game.load.spritesheet("cards", "./images/cards.png", 95, 25, 60);
-    game.load.spritesheet("cards", "./images/cards.png", 86, 25, 43);
-    game.load.spritesheet("cards", "./images/cards.png", 74, 20, 48);
-    game.load.spritesheet("cards", "./images/cards.png", 71, 27, 19);
-    game.load.spritesheet("cards", "./images/cards.png", 100, 52, 100);
-    game.load.spritesheet("cards", "./images/cards.png", 49, 65, 63);
-    game.load.spritesheet("cards", "./images/cards.png", 60, 18, 39);
-    game.load.spritesheet("cards", "./images/cards.png", 57, 51, 42);
-    game.load.spritesheet("cards", "./images/cards.png", 80, 35, 10);
-    game.load.spritesheet("cards", "./images/cards.png", 31, 71, 5);
-    game.load.spritesheet("cards", "./images/cards.png", 34, 68, 70);
-    game.load.spritesheet("cards", "./images/cards.png", 80, 35, 52);
-    game.load.spritesheet("cards", "./images/cards.png", 58, 17, 45);
-    game.load.spritesheet("cards", "./images/cards.png", 66, 37, 45);
-    game.load.spritesheet("cards", "./images/cards.png", 92, 52, 27);
-    game.load.spritesheet("cards", "./images/cards.png", 90, 25, 50);
-    game.load.spritesheet("cards", "./images/cards.png", 35, 89, 66);
-    game.load.spritesheet("cards", "./images/cards.png", 40, 91, 62);
-    game.load.spritesheet("cards", "./images/cards.png", 61, 36, 38);
-    game.load.spritesheet("cards", "./images/cards.png", 81, 12, 73);
-    game.load.spritesheet("cards", "./images/cards.png", 70, 20, 40);
 }
 
 //MOVING all children
@@ -217,6 +153,7 @@ function swapCard (card) {     //card is chosen base card
     }
     
     
+    
     updateCards();
     chosen1 = false;
     //rootchosen = false;
@@ -265,6 +202,15 @@ function chooseRoot (card) {
     rootchosen = true;    //set to false at next round
 }
 
+function highscore () {
+var highscore = 100;
+localStorage.setItem("bunnyDefenderHighScore", highScore);
+}
+var highscoredisplay = 0;
+if (localStorage.getItem("bunnyDefenderHighScore") !== null) {
+    highScoreToDisplay = parseInt(localStorage.getItem("bunnyDefenderHighScore"));
+}
+var gameOverText = this.game.add.text(100, 100, highScoreToDisplay.toString(), {font: "20pt Arial", fill: "#FFFFFF"});
 function update() {
 
 }
